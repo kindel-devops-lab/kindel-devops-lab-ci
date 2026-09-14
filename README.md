@@ -1,5 +1,7 @@
 # Flask Microservice CI/CD Pipeline
 
+![CI/CD Pipeline](https://github.com/Sonelooo77/devops-flask-microservice-ci/actions/workflows/ci.yml/badge.svg)
+
 A simple DevOps hands-on project demonstrating an automated **Continuous Integration (CI)** pipeline for a Python Flask API using **GitHub Actions**, **Docker**, and **DevSecOps** best practices.
 
 ## Project Overview
