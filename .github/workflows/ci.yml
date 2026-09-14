@@ -80,7 +80,7 @@ jobs:
         env:
           NEW_TAG: ${{ steps.vars.outputs.sha_short }}
           GH_TOKEN: ${{ secrets.INFRA_REPO_PAT }}
-          INFRA_REPO: "kindel-devops-lab/devops-flask-microservice-ci"
+          INFRA_REPO: "kindel-devops-lab/kindel-devops-lab-IaC-CD"
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
