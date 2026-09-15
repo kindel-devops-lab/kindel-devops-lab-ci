@@ -12,7 +12,7 @@ The continuous integration pipeline is implemented using GitHub Actions and exec
 2. Unit Testing: Automated testing is performed using pytest to validate that the endpoints respond as expected.
 3. Containerization: A lightweight Docker image is built using a Python 3.10 slim base image with layer caching optimization.
 4. Security Scanning: Aqua Security Trivy scans the compiled container image to detect High and Critical Common Vulnerabilities and Exposures (CVEs).
-5. Registry Publication: The validated container image is pushed to Docker Hub with an immutable tag matching the short Git commit SHA.
+5. Registry Publication: The validated container image is pushed to a private ACR instance using Service Principal authentication with an immutable tag matching the short Git commit SHA.
 6. GitOps Synchronization: The workflow checks out the infrastructure repository using a Personal Access Token, updates the image tag variable inside terraform.tfvars, and commits the modification automatically.
 
 ## API Endpoints
