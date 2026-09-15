@@ -3,6 +3,7 @@ name: CI/CD Pipeline - Build, Publish & Sync Infra
 on:
   push:
     branches: [ "main" ]
+  workflow_dispatch:
 
 jobs:
   # Dependencies, Linting & Unit testing
