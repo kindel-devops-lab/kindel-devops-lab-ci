@@ -25,7 +25,7 @@ def message():
 
 @app.route('/frog', methods=['GET'])
 def show_frog():
-    return '''<img src="/static/frog.jpg" alt="Frog" width="400">'''
+    return '''<img src="/static/frog.jpg" alt="Frog" width="400"><img src="/static/frog2.jpeg" alt="Frog2" width="400">'''
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
