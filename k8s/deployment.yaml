@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: flask-api
-          image: devops-flask-api:v1
+          image: devops-flask-api:v2
           imagePullPolicy: IfNotPresent
           
           ports:

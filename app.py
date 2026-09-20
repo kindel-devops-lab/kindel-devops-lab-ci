@@ -1,7 +1,12 @@
 import os
 from flask import Flask, jsonify
+from prometheus_flask_exporter import PrometheusMetrics
 
 app = Flask(__name__)
+
+# Initialize metrics retrievals and /metrics endpoint
+metrics = PrometheusMetrics(app)
+metrics.info('app_info', 'Application metadata', version='1.0.0')
 
 @app.route('/', methods=['GET'])
 def home():
@@ -18,10 +23,6 @@ def health_check():
         "status": "UP",
         "service": "flask-app"
     }), 200
-
-@app.route('/description', methods=['GET'])
-def message():
-    return "<h1>Description Page</h1><p>The purpose of this website is to help me practice developing and optimizing an entire project using a DevSecOps approach.</p> <p>Specifically: Develop a web microservice, containerize it properly, automate testing, build an automated CI/CD pipeline</p>"
 
 @app.route('/frog', methods=['GET'])
 def show_frog():
