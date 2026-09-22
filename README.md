@@ -20,7 +20,7 @@ The project implements a decoupled lifecycle separating continuous delivery vali
 
 <!-- PLACEHOLDER: Insert Architecture Diagram here -->
 <!-- File: docs/images/architecture(light).png or docs/images/architecture(dark).png -->
-![Microservice Delivery Lifecycle and Observability Workflow](docs/images/architecture(light).png)
+![Microservice Delivery Lifecycle and Observability Workflow](docs/images/architecture(dark).png)
 
 ### Delivery Stages
 
