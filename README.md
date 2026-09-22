@@ -18,8 +18,6 @@ The primary focus is not business logic complexity, but rather building a robust
 
 The project implements a decoupled lifecycle separating continuous delivery validation, local orchestration, and metrics monitoring:
 
-<!-- PLACEHOLDER: Insert Architecture Diagram here -->
-<!-- File: docs/images/architecture(light).png or docs/images/architecture(dark).png -->
 ![Microservice Delivery Lifecycle and Observability Workflow](docs/images/architecture(dark).png)
 
 ### Delivery Stages
@@ -55,8 +53,6 @@ Local deployment is managed using a multi-replica Kubernetes setup running on a 
 * Internal Routing: A ClusterIP Service distributes traffic across active pods.
 * Health Checks: Integrated liveness and readiness probes verify endpoint status on /health every 10 seconds.
 
-<!-- PLACEHOLDER: Insert Kubernetes Cluster Status Terminal Screenshot here -->
-<!-- File: docs/images/k8s-cluster-status.png -->
 ![Kubernetes Pods and Endpoints Status](docs/images/k8s-cluster-status.png)
 
 ---
@@ -68,8 +64,6 @@ The service is fully instrumented for telemetry collection, running Prometheus a
 * Metrics Ingestion: Prometheus scrapes the /metrics endpoint every 5 seconds.
 * Visualization: Grafana displays request rates, HTTP status distribution, and active workload health.
 
-<!-- PLACEHOLDER: Insert Grafana Dashboard Screenshot here -->
-<!-- File: docs/images/grafana-throughput.png -->
 ![Grafana API Throughput Under Load](docs/images/grafana-throughput.png)
 
 ---
