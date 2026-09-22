@@ -27,7 +27,7 @@ The project implements a decoupled lifecycle separating continuous delivery vali
 3. Vulnerability Assessment: Aqua Security Trivy audits the compiled container image to detect Critical and High Common Vulnerabilities and Exposures (CVEs) before distribution.
 4. Container Compilation: Docker builds an optimized runtime image based on python:3.10-slim leveraging layer caching.
 5. Image Distribution: The validated image is delivered to a private Azure Container Registry (ACR) with an immutable tag tied to the short Git commit SHA.
-6. GitOps Synchronization: The pipeline automates metadata propagation to the infrastructure repository, updating the target deployment image tag in terraform.tfvars.
+6. GitOps Synchronization: The pipeline automates metadata propagation to the infrastructure repository (https://github.com/kindel-devops-lab/kindel-devops-lab-IaC-CD), updating the target deployment image tag in terraform.tfvars.
 
 ---
 
