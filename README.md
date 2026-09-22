@@ -1,22 +1,122 @@
-# Flask Monitoring API and DevSecOps Pipeline
+# Cloud-Native Microservice Delivery and Observability Pipeline
 
-![CI/CD Pipeline](https://github.com/Sonelooo77/devops-flask-microservice-ci/actions/workflows/ci.yml/badge.svg)
+[![CI Pipeline](https://github.com/kindel-devops-lab/flask-devops-ci-pipeline/actions/workflows/ci.yml/badge.svg)](https://github.com/kindel-devops-lab/flask-devops-ci-pipeline/actions/workflows/ci.yml)
 
-This repository contains a lightweight Flask REST microservice simulating a system health monitoring endpoint. The primary objective is to demonstrate an automated continuous integration and DevSecOps workflow that validates code quality, scans container images for security vulnerabilities, and synchronizes deployment metadata with a dedicated infrastructure repository.
+Automated continuous integration, security validation, containerization, and local Kubernetes orchestration pipeline for an instrumented Python microservice.
 
-## Architecture and Workflow
+---
 
-The continuous integration pipeline is implemented using GitHub Actions and executes on every push to the main branch:
+## Project Overview
 
-1. Code Quality: Python source code is analyzed using flake8 to enforce PEP8 standards and syntax rules.
-2. Unit Testing: Automated testing is performed using pytest to validate that the endpoints respond as expected.
-3. Containerization: A lightweight Docker image is built using a Python 3.10 slim base image with layer caching optimization.
-4. Security Scanning: Aqua Security Trivy scans the compiled container image to detect High and Critical Common Vulnerabilities and Exposures (CVEs).
-5. Registry Publication: The validated container image is pushed to a private ACR instance using Service Principal authentication with an immutable tag matching the short Git commit SHA.
-6. GitOps Synchronization: The workflow checks out the infrastructure repository using a Personal Access Token, updates the image tag variable inside terraform.tfvars, and commits the modification automatically.
+This repository hosts a lightweight Python microservice engineered as a telemetry harness for testing modern DevSecOps delivery cycles and resilient container orchestration.
 
-## API Endpoints
+The primary focus is not business logic complexity, but rather building a robust, auditable delivery workflow that enforces automated code quality, container security auditing, declarative deployment, and real-time observability.
 
-The service exposes two HTTP endpoints:
-- GET /: Returns a basic service description and confirmation that the API is running.
-- GET /health: Returns a JSON status object used by orchestration probes and smoke tests.
+---
+
+## Architecture and Delivery Workflow
+
+The project implements a decoupled lifecycle separating continuous delivery validation, local orchestration, and metrics monitoring:
+
+<!-- PLACEHOLDER: Insert Architecture Diagram here -->
+<!-- File: docs/images/architecture(light).png or docs/images/architecture(dark).png -->
+![Microservice Delivery Lifecycle and Observability Workflow](docs/images/architecture(light).png)
+
+### Delivery Stages
+
+1. Code Quality: Python source code is evaluated with flake8 to enforce PEP8 standards and prevent structural issues.
+2. Automated Testing: Unit and integration testing are executed with pytest against the virtual client endpoints.
+3. Vulnerability Assessment: Aqua Security Trivy audits the compiled container image to detect Critical and High Common Vulnerabilities and Exposures (CVEs) before distribution.
+4. Container Compilation: Docker builds an optimized runtime image based on python:3.10-slim leveraging layer caching.
+5. Image Distribution: The validated image is delivered to a private Azure Container Registry (ACR) with an immutable tag tied to the short Git commit SHA.
+6. GitOps Synchronization: The pipeline automates metadata propagation to the infrastructure repository, updating the target deployment image tag in terraform.tfvars.
+
+---
+
+## API Contract
+
+The application exposes standard operational HTTP endpoints instrumented with prometheus-flask-exporter:
+
+| Endpoint | Method | Purpose | Response Format |
+|---|---|---|---|
+| / | GET | Service identity and status verification | JSON |
+| /health | GET | Lifecycle probes (readiness/liveness) and smoke tests | JSON |
+| /metrics | GET | System and request telemetry export for Prometheus | OpenMetrics plaintext |
+
+---
+
+## Local Orchestration (Kubernetes via Kind)
+
+Local deployment is managed using a multi-replica Kubernetes setup running on a local Kind cluster, ensuring zero-downtime execution and automated self-healing.
+
+### Deployment Characteristics
+
+* Replicas: 3 pod instances managed by a Kubernetes Deployment controller.
+* Internal Routing: A ClusterIP Service distributes traffic across active pods.
+* Health Checks: Integrated liveness and readiness probes verify endpoint status on /health every 10 seconds.
+
+<!-- PLACEHOLDER: Insert Kubernetes Cluster Status Terminal Screenshot here -->
+<!-- File: docs/images/k8s-cluster-status.png -->
+![Kubernetes Pods and Endpoints Status](docs/images/k8s-cluster-status.png)
+
+---
+
+## Observability Stack (Prometheus and Grafana)
+
+The service is fully instrumented for telemetry collection, running Prometheus and Grafana inside a dedicated monitoring namespace.
+
+* Metrics Ingestion: Prometheus scrapes the /metrics endpoint every 5 seconds.
+* Visualization: Grafana displays request rates, HTTP status distribution, and active workload health.
+
+<!-- PLACEHOLDER: Insert Grafana Dashboard Screenshot here -->
+<!-- File: docs/images/grafana-throughput.png -->
+![Grafana API Throughput Under Load](docs/images/grafana-throughput.png)
+
+---
+
+## Local Execution Guide
+
+### Prerequisites
+
+* Docker
+* Kind
+* kubectl
+
+### 1. Build and Load Image into Kind
+
+```bash
+docker build -t devops-flask-api:v2 .
+kind load docker-image devops-flask-api:v2 --name k8s-devops-lab
+```
+
+### 2. Apply Workload Manifests
+
+```bash
+kubectl apply -f k8s/deployment.yaml
+kubectl apply -f k8s/service.yaml
+```
+
+### 3. Deploy Observability Infrastructure
+
+```bash
+kubectl create namespace monitoring
+kubectl apply -f k8s/monitoring/prometheus-config.yaml
+kubectl apply -f k8s/monitoring/prometheus-deployment.yaml
+kubectl apply -f k8s/monitoring/grafana.yaml
+```
+
+### 4. Access Services Locally
+
+Forward the API service port:
+```bash
+kubectl port-forward svc/flask-api-service 8085:80
+```
+
+Forward the Grafana dashboard port:
+
+```bash
+kubectl port-forward -n monitoring svc/grafana-service 3000:3000
+```
+
+* Grafana endpoint: http://localhost:3000 (Credentials: admin / admin)
+* Key PromQL Throughput query: sum(rate(flask_http_request_total[1m]))
