@@ -1,6 +1,6 @@
 # Cloud-Native Microservice Delivery and Observability Pipeline
 
-[![CI Pipeline](https://github.com/kindel-devops-lab/flask-devops-ci-pipeline/actions/workflows/ci.yml/badge.svg)](https://github.com/kindel-devops-lab/flask-devops-ci-pipeline/actions/workflows/ci.yml)
+[![CI Pipeline](https://github.com/kindel-devops-lab/kindel-devops-lab-ci/actions/workflows/ci.yml/badge.svg)](https://github.com/kindel-devops-lab/kindel-devops-lab-ci/actions/workflows/ci.yml)
 
 Automated continuous integration, security validation, containerization, and local Kubernetes orchestration pipeline for an instrumented Python microservice.
 
